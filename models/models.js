@@ -35,12 +35,22 @@ sequelize.sync().then(function(){
 	//then(..) ejecuta el manejador una vez creada la tabla
 	Quiz.count().then(function(count){
 		if(count === 0){ //La tabla de inicializa solo si está vacía
+			
 			Quiz.create({
 				pregunta: '¿Cuál es la capital de Italia?',
 				respuesta: 'Roma'
 			}).then(function(){
-				console.log('Base de datos inicializada');
+				console.log('Se crea un primer registro');
 			});
+
+			
+			Quiz.create({
+				pregunta: '¿Cuál es la capital de Portugal?',
+				respuesta: 'Lisboa'
+			}).then(function(){
+				console.log('Se crea otro registro. Base de datos inicializada');
+			});
+			
 		}
 	});
 });
