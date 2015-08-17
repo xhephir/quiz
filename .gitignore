@@ -44,3 +44,5 @@ Temporary Items
 
 #My personal stuff
 node_modules/
+quiz.sqlite
+.env
