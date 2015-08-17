@@ -1,28 +1,41 @@
 var models = require('../models/models');
 
+//Autoload - factoriza el código si ruta incluye :quizId
+
+exports.load = function(req, re, next, quizId){
+	models.Quiz.findById(quizId).then(function(quiz){
+		if(quiz){
+			req.quiz = quiz;
+			next();
+		}else{
+			next(new Error('No existe el quizId=' + quizId));
+		}
+	}).catch(function(error){
+		next(error);
+	});
+};
+
 // GET /quizes
 exports.index = function(req, res){
 	models.Quiz.findAll().then(function(quizes){
 		res.render('quizes/index.ejs', {quizes: quizes});
+	}).catch(function(error){
+		next(error);
 	});
-}
+};
 
 // GET /quizes/:quizId
 exports.show = function(req, res){
-	models.Quiz.findById(req.params.quizId).then(function(quiz){
-		res.render('quizes/show', {quiz: quiz});
-	});
+	res.render('quizes/show', {quiz: req.quiz});
 };
 
 // GET /quizes/:quizId/answer
 
-exports.answer = function(req, res){
-	models.Quiz.findById(req.params.quizId).then(function(quiz){
-		var estadoRespuesta = 'Incorrecto';
-		if(req.query.respuesta.toLowerCase() === quiz.respuesta.toLowerCase()){
-			estadoRespuesta = 'Correcto';
-		}
+exports.answer = function(req, res){	
+	var estadoRespuesta = 'Incorrecto';
+	if(req.query.respuesta.toLowerCase() === req.quiz.respuesta.toLowerCase()){
+		estadoRespuesta = 'Correcto';
+	}
 
-		res.render('quizes/answer', {quiz: quiz, respuesta: estadoRespuesta});
-	});
+	res.render('quizes/answer', {quiz: req.quiz, respuesta: estadoRespuesta});
 };
