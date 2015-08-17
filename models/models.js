@@ -43,10 +43,16 @@ sequelize.sync().then(function(){
 				console.log('Se crea un primer registro');
 			});
 
-			
 			Quiz.create({
 				pregunta: '¿Cuál es la capital de Portugal?',
 				respuesta: 'Lisboa'
+			}).then(function(){
+				console.log('Se crea otro registro.');
+			});
+
+			Quiz.create({
+				pregunta: '¿Cuál es la capital de Colombia?',
+				respuesta: 'Bogotá'
 			}).then(function(){
 				console.log('Se crea otro registro. Base de datos inicializada');
 			});
